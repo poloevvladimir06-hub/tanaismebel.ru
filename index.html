@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ТАНАИС - Мебель для ванных комнат</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display:wght@400;700&family=Montserrat:wght@400;700&family=Lora:wght@400;700&family=Oswald:wght@400;500&family=Raleway:wght@400;700&family=Merriweather:wght@400;700&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="wave-background">
+        <div class="wave wave1"></div>
+        <div class="wave wave2"></div>
+        <div class="wave wave3"></div>
+    </div>
+
+    <!-- Панель рисования для режима модератора -->
+    <div (id="drawingPanel" class="drawing-panel">
+        <div class="panel-header" id="panelDragHandle">
+            <h3>🎨 Панель рисования</h3>
+            <button class="panel-close" onclick="toggleDrawingPanel()">×</button>
+        </div>
+        <div class="panel-content">
+            <div class="tool-section">
+                <h4>🛠️ Инструменты</h4>
+                <div class="tool-buttons">
+                    <button class="tool-btn active" data-tool="line" onclick="setTool('line')">📏 Линия</button>
+                    <button class="tool-btn" data-tool="rectangle" onclick="setTool('rectangle')">⬜ Прямоугольник</button>
+                    <button class="tool-btn" data-tool="circle" onclick="setTool('circle')">⭕ Круг</button>
+                    <button class="tool-btn" data-tool="arrow" onclick="setTool('arrow')">➡️ Стрелка</button>
+                </div>
+            </div>
+
+            <div class="tool-section">
+                <h4>📏 Размер линии</h4>
+                <div class="size-controls">
+                    <input type="range" id="lineWidth" min="1" max="20" value="3" class="slider">
+                    <span id="lineWidthValue">3px</span>
+                </div>
+            </div>
+
+            <div class="tool-section">
+                <h4>🎨 Цвет линии</h4>
+                <div class="color-palette">
+                    <div class="color-option active" data-color="#ff4444" style="background: #ff4444;" onclick="setColor('#ff4444')"></div>
+                    <div class="color-option" data-color="#44ff44" style="background: #44ff44;" onclick="setColor('#44ff44')"></div>
+                    <div class="color-option" data-color="#4444ff" style="background: #4444ff;" onclick="setColor('#4444ff')"></div>
+                    <div class="color-option" data-color="#ffff44" style="background: #ffff44;" onclick="setColor('#ffff44')"></div>
+                    <div class="color-option" data-color="#ff44ff" style="background: #ff44ff;" onclick="setColor('#ff44ff')"></div>
+                    <div class="color-option" data-color="#44ffff" style="background: #44ffff;" onclick="setColor('#44ffff')"></div>
+                    <div class="color-option" data-color="#000000" style="background: #000000;" onclick="setColor('#000000')"></div>
+                    <div class="color-option" data-color="#ffffff" style="background: #ffffff; border: 1px solid #ccc;" onclick="setColor('#ffffff')"></div>
+                </div>
+                <div class="custom-color">
+                    <input type="color" id="customColor" value="#ff4444" onchange="setCustomColor(this.value)">
+                    <label for="customColor">Свой цвет</label>
+                </div>
+            </div>
+
+            <div class="tool-section">
+                <h4>✏️ Стиль линии</h4>
+                <div class="style-buttons">
+                    <button class="style-btn active" data-style="solid" onclick="setLineStyle('solid')">───── Сплошная</button>
+                    <button class="style-btn" data-style="dashed" onclick="setLineStyle('dashed')">--- - - Пунктир</button>
+                    <button class="style-btn" data-style="dotted" onclick="setLineStyle('dotted')">••••• Точки</button>
+                </div>
+            </div>
+
+            <div class="tool-section">
+                <h4>⚡ Действия</h4>
+                <div class="action-buttons">
+                    <button class="action-btn clear-btn" onclick="clearCanvas()">🧹 Очистить</button>
+                    <button class="action-btn undo-btn" onclick="undoLast()">↶ Отменить</button>
+                    <button class="action-btn save-btn" onclick="saveDrawing()">💾 Сохранить</button>
+                </div>
+            </div>
+
+            <div class="tool-section">
+                <div class="toggle-drawing">
+                    <label class="switch">
+                        <input type="checkbox" id="drawingModeToggle" onchange="toggleDrawingMode()">
+                        <span class="slider-round"></span>
+                    </label>
+                    <span>Режим рисования</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<header>
+    <div class="container">
+        <div class="logo">
+            <!-- ВСТАВЬТЕ ССЫЛКУ НА ВАШЕ ИЗОБРАЖЕНИЕ -->
+            <img src="C:\Users\Acer Aspire\OneDrive\Pictures\Screenshots\Снимок экрана 2025-11-29 185431.png" 
+                 alt="ТАНАИС - Мебель для ванных комнат" 
+                 class="site-logo" 
+                 id="siteLogo"
+                 style="max-width: 300px; height: auto;">
+            <!-- Удалили <h1 id="siteTitle">ТАНАИС</h1> -->
+            <p>Производитель мебели для ванных комнат</p>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#home">Главная</a></li>
+                <li><a href="#catalog">Каталог</a></li>
+                <li><a href="#about">О компании</a></li>
+                <li><a href="#contacts">Контакты</a></li>
+                <li><button id="moderatorBtn" class="moderator-btn">Режим модератора</button></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+    <section id="home" class="hero">
+        <div class="container">
+            <h2>Элегантная мебель для вашей ванной комнаты</h2>
+            <p>Тумбы, зеркала, раковины и аксессуары высшего качества</p>
+            <a href="#catalog" class="btn">Смотреть каталог</a>
+        </div>
+    </section>
+
+    <section id="catalog" class="catalog">
+        <div class="container">
+            <h2>Наша продукция</h2>
+            
+            <div id="addProductForm" class="add-product-form" style="display: none;">
+                <h3>Добавить новый товар</h3>
+                <div class="form-row">
+                    <input type="text" id="productName" placeholder="Название товара" class="form-input">
+                    <select id="productCategory" class="form-select">
+                        <option value="cabinets">Тумбы</option>
+                        <option value="mirrors">Зеркала</option>
+                        <option value="sinks">Раковины</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <input type="number" id="productPrice" placeholder="Цена" class="form-input">
+                    <textarea id="productDescription" placeholder="Описание товара" class="form-textarea"></textarea>
+                </div>
+                <div class="form-row">
+                    <input type="text" id="productFeatures" placeholder="Характеристики (через запятую)" class="form-input">
+                </div>
+                <div class="form-row">
+                    <div class="image-upload">
+    <label class="upload-label">
+        <input type="file" id="productImage" accept="image/*" class="file-input" multiple>
+        <span class="upload-btn">Выбрать фото</span>
+    </label>
+    <span class="file-name" id="fileName">Фото не выбрано</span>
+</div>
+                    <button id="addProductBtn" class="btn">Добавить товар</button>
+                </div>
+            </div>
+
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">Вся продукция</button>
+                <button class="filter-btn" data-filter="cabinets">Тумбы</button>
+                <button class="filter-btn" data-filter="mirrors">Зеркала</button>
+                <button class="filter-btn" data-filter="sinks">Раковины</button>
+            </div>
+
+            <div class="products-grid"></div>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <div class="container">
+            <div class="about-header">
+                <h2>О компании ТАНАИС</h2>
+                <button class="info-btn" id="aboutInfoBtn" title="Подробная информация о компании">i</button>
+            </div>
+            <p>Мы производим качественную мебель для ванных комнат с 2005 года. Наша продукция сочетает в себе современный дизайн, функциональность и долговечность.</p>
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">💎</div>
+                    <h3>Качество</h3>
+                    <p>Используем только проверенные материалы и фурнитуру</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Дизайн</h3>
+                    <p>Современные и классические решения для любого интерьера</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🚚</div>
+                    <h3>Доставка</h3>
+                    <p>Быстрая доставка по всей России</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contacts" class="contacts">
+        <div class="container">
+            <h2>Контакты</h2>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <div class="contact-icon">📍</div>
+                    <h3>Адрес</h3>
+                    <p>г. Раменское ул. Михалевича, 131</p>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">📞</div>
+                    <h3>Телефон</h3>
+                    <p>+7 (925) 234-94-90</p>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">✉️</div>
+                    <h3>Email</h3>
+                    <p>tanais.m@gmail.com</p>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">⏰</div>
+                    <h3>Режим работы</h3>
+                    <p>Пн-Пт: 9:00-20:00</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<footer>
+    <div class="container">
+        <p>&copy; 2025 ТАНАИС. Все права защищены.</p>
+        <button id="moderatorBtn" title="Режим модератора (нажмите или используйте Ctrl+Shift+M)">
+            <!-- Пусто - текст не отображается -->
+        </button>
+    </div>
+</footer>
+
+    <!-- Canvas для рисования -->
+    <canvas id="drawingCanvas"></canvas>
+
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-body"></div>
+        </div>
+    </div>
+
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeLogin">&times;</span>
+            <div class="login-form">
+                <h2>Вход для модератора</h2>
+                <input type="password" id="moderatorPassword" placeholder="Пароль" class="form-input">
+                <button id="loginBtn" class="btn">Войти</button>
+                <p class="login-hint"></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="aboutInfoModal" class="modal">
+        <div class="modal-content large-modal">
+            <span class="close" id="closeAboutInfo">&times;</span>
+            <div class="about-info-content">
+                <h2>Подробная информация о компании ТАНАИС</h2>
+                <div class="info-text">
+                    <p><strong>ТАНАИС</strong> — ведущий российский производитель мебели для ванных комнат, успешно работающий на рынке с 2005 года. Наша компания зарекомендовала себя как надежный партнер, предлагающий качественную и стильную продукцию.</p>
+
+                    <h3>🎯 Наши миссии</h3>
+                    <p>Создавать комфортное и функциональное пространство в ванных комнатах, сочетая инновационные технологии, экологичные материалы и современный дизайн.</p>
+
+                    <h3>🏭 Производство</h3>
+                    <p>Наш производственный комплекс расположен в городе Раменское и оснащен современным европейским оборудованием. Мы используем:</p>
+                    <ul>
+                        <li>Влагостойкие материалы МДФ и ЛДСП</li>
+                        <li>Качественную фурнитуру</li>
+                        <li>Стекло с защитой от запотевания</li>
+                        <li>Экологичные лакокрасочные покрытия</li>
+                    </ul>
+
+                    <h3>📈 Наши достижения</h3>
+                    <ul>
+                        <li>Более 20 лет успешной работы на рынке</li>
+                        <li>География поставок — вся Россия</li>
+                        <li>Сотрудничество с крупными строительными компаниями</li>
+                        <li>Сертификация по ГОСТ и ISO 9001</li>
+                    </ul>
+
+                    <h3>🌐 О нашем сайте</h3>
+                    <p>Наш сайт разработан с использованием современных веб-технологий:</p>
+                    <ul>
+                    </ul>
+
+                    <h3>👥 Наша команда</h3>
+                    <p>В нашей компании работают высококвалифицированные специалисты:</p>
+                    <ul>
+                        <li>Дизайнеры и конструкторы</li>
+                        <li>Технологи и инженеры</li>
+                        <li>Менеджеры по продажам</li>
+                        <li>Сервисные специалисты</li>
+                    </ul>
+
+                    <h3>📞 Контакты производства</h3>
+                    <p><strong>Адрес производства:</strong> г. Раменское ул. Михалевича, 131</p>
+                    <p><strong>Телефон:</strong> +7 (925) 234-94-90</p>
+                    <p><strong>Email:</strong> tanais.m@gmail.com</p>
+                    <p><strong>Режим работы:</strong> Пн-Пт: 9:00-20:00</p>
+
+                    <div class="final-note">
+                        <p>Мы гордимся нашей работой и постоянно совершенствуемся, чтобы предлагать нашим клиентам только лучшее!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+<div style="background-color: #1a1a1a; color: #ffffff; padding: 20px; border-radius: 8px; font-family: Arial, sans-serif;">
+  <h2 style="color: #ffffff; margin-bottom: 15px;">В нашей компании работают высококвалифицированные специалисты:</h2>
+  
+  <ul style="color: #e0e0e0; padding-left: 20px; margin-bottom: 20px;">
+    <li>Дизайнеры и конструкторы</li>
+    <li>Технологии и инженеры</li>
+    <li>Менеджеры по продажам</li>
+    <li>Сервисные специалисты</li>
+  </ul>
+
+  <h3 style="color: #ffffff; margin-bottom: 10px;">Контакты производства</h3>
+  
+  <div style="color: #e0e0e0; line-height: 1.6;">
+    <p><strong>Адрес производства:</strong> г. Раменское ул. Михалевича, 131</p>
+    <p><strong>Телефон:</strong> +7 (925) 234-94-90</p>
+    <p><strong>Email:</strong> tanais.m@gmail.com</p>
+    <p><strong>Режим работы:</strong> Пн-Пт: 9:00-20:00</p>
+  </div>
+
+  <p style="color: #e0e0e0; margin-top: 20px; font-style: italic;">
+    Мы гордимся нашей работой и постоянно совершенствуемся, чтобы предлагать нашим клиентам только лучшее!
+  </p>
+</div>
+
